@@ -1,0 +1,111 @@
+.App {
+  text-align: center;
+}
+
+
+.nav{
+  margin-top: 1rem;
+  
+}
+
+.login{
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+.log{
+  background:linear-gradient(230deg,rgb(87, 212, 83),rgb(187, 218, 95));
+}
+
+.cards{
+  background:linear-gradient(360deg,rgb(218, 148, 95),rgb(83, 137, 212));   
+}
+
+.section{
+ background-color: lightblue;
+}
+
+#navbar-dark-example{
+  font-size: 1.5rem;
+  color: rgb(0, 0, 0);
+}
+.navbar{
+  margin: 0rem;
+  font-size: 1.5rem;
+  color: rgb(0, 0, 0);
+}
+
+.snav{
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+#login{
+  margin:1rem;
+  font-size: 1.5rem;
+  color: rgb(0, 0, 0);
+}
+
+#reportcont{
+  background-color: aliceblue;
+  padding: 2rem;
+  text-align: center;
+}
+
+#cd{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10rem;
+}
+
+#int{
+  position: relative;
+  text-align: right;
+  opacity: 0;
+  z-index: 2;
+  cursor: pointer;
+  height: 46px;
+  max-width: 200px;
+}
+#btn{
+  position: absolute;
+          /* top: 0px;
+          left: 0px; */
+          width: 15rem;
+          height: 5rem;
+          z-index: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          color: #fff;
+          background-color: #f55e30;
+          font-size: 1.5rem;
+          cursor: pointer;
+          border-radius: 4px;
+          border: none;
+          outline: none;
+          transition: background-color 0.4s;
+          box-shadow: 0px 8px 24px rgba(149, 157, 165, 0.5);
+}
+
+i {
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0.4em;
+  background-color: #fff;
+  color: #f55e30;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.5em;
+  font-size: 1em;
+}
+
+.pdf{
+  margin:2rem;
+  font-size: 1.5rem;
+  color: rgb(0, 0, 0);
+}
