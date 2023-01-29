@@ -6,15 +6,16 @@ import 'firebase/compat/storage';
 import {getAuth} from 'firebase/auth';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyDEenFYTLZMECWSjapdHMaLti5vuUt59zc",
-    authDomain: "digital-farming-4bd62.firebaseapp.com",
-    projectId: "digital-farming-4bd62",
-    storageBucket: "digital-farming-4bd62.appspot.com",
-    messagingSenderId: "1019737702422",
-    appId: "1:1019737702422:web:336eeef7875211a2e53537",
-    measurementId: "G-6DZ3B57S7J"
-  };
+  apiKey: "AIzaSyB0HyjOeSqof77I6aRVwtCoeIQpiZEsIQQ",
+  authDomain: "digitalfarmingapp.firebaseapp.com",
+  projectId: "digitalfarmingapp",
+  storageBucket: "digitalfarmingapp.appspot.com",
+  messagingSenderId: "626664483888",
+  appId: "1:626664483888:web:c6c099bd6cdef043ca51f5",
+  measurementId: "G-EV7BRES2T2"
+};
 
   function listAll(folder) {
     const storageRef = firebase.storage().ref();

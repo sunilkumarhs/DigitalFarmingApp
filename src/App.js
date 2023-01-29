@@ -5,7 +5,7 @@ import MainPage from './MainContainer/MainPage';
 import AboutUsPage from './MainContainer/AboutUsPage';
 import Services from './MainContainer/Services';
 import Contact from './MainContainer/Contact';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import PdfDisplayPage from './SoilTestContainer/PdfDisplayPage';
 import SoilTestPdfUploader from './admin/SoilTestPdfUploader';
 import SoilTestMainPage from './SoilTestContainer/SoilTestMainPage';
@@ -19,6 +19,8 @@ import LawnGarden from './SoilTestContainer/TestingServices/LawnGarden';
 import HowToTakeSoil from './SoilTestContainer/TestingServices/HowToTakeSoil';
 import { onAuthStateChanged} from 'firebase/auth';
 import { auth } from './firebase';
+// import PageNotFound from './PageNotFound';
+
 
 function App() {
 
@@ -31,6 +33,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
+      
       {
         user ? (
           <Routes>
@@ -39,13 +42,13 @@ function App() {
           </Routes>
         ) : null
       }
+       
       <Routes>
         <Route path="/" element={<MainPage/>}></Route> 
         <Route path='/PdfDisplayPage' element={<PdfDisplayPage/>}></Route>
         <Route path='/AboutUsPage' element={<AboutUsPage/>}></Route>
         <Route path='/Services' element={<Services/>}></Route>
         <Route path='/Contact' element={<Contact/>}></Route>
-        <Route path='/PdfUploader' element={<SoilTestPdfUploader/>}></Route>
         <Route path='/SoilTestPage' element={<SoilTestMainPage/>}></Route>
         <Route path='/Registeration' element={<FarmRegisteration/>}></Route>
         <Route path='/FarmLogin' element={<FarmLogin/>}></Route>
@@ -53,6 +56,7 @@ function App() {
         <Route path='/OurMathods' element={<OurMethods/>}></Route>
         <Route path='/LawnGarden' element={<LawnGarden/>}></Route>
         <Route path='/SoilSample' element={<HowToTakeSoil/>}></Route>
+        <Route path='/SoilReportUpload' element={<SoilTestPdfUploader/>}></Route>
       </Routes>
       </BrowserRouter>
     </div>

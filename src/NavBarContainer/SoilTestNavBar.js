@@ -32,7 +32,7 @@ function SoilTestNavBar() {
               <NavDropdown.Item href="#action/3.1" style={{fontSize:'1.5rem'}}>Horticultural Crops</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.1" style={{fontSize:'1.5rem'}}>Lawn, Garden and Landscape Plants</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="/SoilTestPage" className='snav'>Other Resources</Nav.Link>
+            <Nav.Link href='/PdfDisplayPage' className='snav'>Soil-Test Report</Nav.Link>
             <Nav.Link href="/SoilTestPage" className='snav'>FAQS</Nav.Link>
             <Nav.Link href="/SoilTestPage" className='snav'>Contact Us</Nav.Link>
           </Nav>

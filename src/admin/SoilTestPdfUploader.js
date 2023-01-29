@@ -7,7 +7,7 @@ import simage from '../Images/main_images/Soil-Testingimage.jpg';
 import { Button, Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import {FaPlus} from '@react-icons/all-files/fa/FaPlus.esm'
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import '@react-pdf-viewer/core/lib/styles/index.css';
@@ -18,7 +18,7 @@ function SoiltestReportPDF() {
   const [viewPdf, setViewPdf] = useState(null);
   const [selectFile, setfiles] = useState(null);
   const fileType = ['application/pdf']
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   function viewPdfHandler() {
     if(selectFile) {
@@ -49,7 +49,7 @@ function SoiltestReportPDF() {
       uploadBytes(pdfRef, selectFile).then(() => {
         alert("Pdf is sucessfully uploaded");
       })
-    //    navigate('/')
+       navigate('/')
     }
     else {
       alert("Select the pdf file");
