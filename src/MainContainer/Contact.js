@@ -1,13 +1,44 @@
-import React from 'react'
+import React,{useState} from 'react'
 import Footer from './Footer'
 import Topbar from './Topbar'
-import NavBar from '../NavBarContainer/NavBar'
+import {addDoc, collection} from 'firebase/firestore';
+import { db } from '../firebase';
+import { useNavigate } from 'react-router-dom';
+import NavBar2 from '../NavBarContainer/NavBar2';
+
 
 function Contact() {
+    const [name, setName] = useState();
+    const [email, setMail] = useState();
+    const [subject, setSubject] = useState();
+    const [content, setContent] = useState();
+    const navigate = useNavigate();
+    var mail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    const queryCollectionRef = collection(db, "queries");
+
+    const post = async () => {
+        if(name.length !== 0 && subject.length !== 0 && content.length !== 0 ) {
+            if(mail.test(email)===true) {
+                await addDoc(queryCollectionRef, {Name: name, Email: email, Subject: subject, Content: content});
+            alert("Sent sucessfully");
+            navigate('/');
+            } else {
+                alert("enter the proper email");
+            }
+        } else {
+            alert("Provide the required field details!!")
+        }
+       
+        
+    }
+
   return (
     <div>
       <Topbar/>
-      <NavBar/>
+      <div>
+      <NavBar2/>
+      </div>
       {/* <!-- Contact Start --> */}
     <div className="container-fluid py-5">
         <div className="container">
@@ -18,25 +49,26 @@ function Contact() {
             <div className="row g-0">
                 <div className="col-lg-7">
                     <div className="bg-primary h-100 p-5">
-                        <form>
-                            <div className="row g-3">
+                    {/* <form onSubmit={post}> */}
+                            <div className="row g-3"> 
                                 <div className="col-6">
-                                    <input type="text" className="form-control bg-light border-0 px-4" placeholder="Your Name" style={{height: '55px'}}/>
+                                    <input type="text" className="form-control bg-light border-0 px-4" placeholder="Your Name" onChange={(event) => {setName(event.target.value);}} style={{height: '55px'}}/>
                                 </div>
                                 <div className="col-6">
-                                    <input type="email" className="form-control bg-light border-0 px-4" placeholder="Your Email" style={{height: '55px'}}/>
+                                    <input type="email" className="form-control bg-light border-0 px-4" placeholder="Your Email" onChange={(event) => {setMail(event.target.value);}} style={{height: '55px'}}/>
                                 </div>
                                 <div className="col-12">
-                                    <input type="text" className="form-control bg-light border-0 px-4" placeholder="Subject" style={{height: '55px'}}/>
+                                    <input type="text" className="form-control bg-light border-0 px-4" placeholder="Subject" onChange={(event) => {setSubject(event.target.value);}} style={{height: '55px'}}/>
                                 </div>
                                 <div className="col-12">
-                                    <textarea className="form-control bg-light border-0 px-4 py-3" rows="2" placeholder="Message"></textarea>
+                                    <textarea  className="form-control bg-light border-0 px-4 py-3" rows="2" placeholder="Message" onChange={(event) => {setContent(event.target.value);}} ></textarea>
                                 </div>
                                 <div className="col-12">
-                                    <button className="btn btn-secondary w-100 py-3" type="submit">Send Message</button>
+                                    <button className="btn btn-secondary w-100 py-3" onClick={post} >Submit Message</button>
+                                    {/* <input className="btn btn-secondary w-100 py-3" type="submit" value="Submit Message" /> */}
                                 </div>
                             </div>
-                        </form>
+                        {/* </form>  */}
                     </div>
                 </div>
                 <div className="col-lg-5">

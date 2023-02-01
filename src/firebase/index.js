@@ -4,6 +4,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import {getAuth} from 'firebase/auth';
+import {getFirestore} from '@firebase/firestore';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -50,5 +51,7 @@ const firebaseConfig = {
 
   const storage = firebase.storage();
   const auth = getAuth(app);
+
+  export const db = getFirestore(app);
 
   export {storage, auth, listAll, firebase as default};
