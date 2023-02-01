@@ -6,7 +6,7 @@ function FarmersPage() {
     <div>
       <NavBar/>
       <div>
-        <h1>FarmersPage</h1>
+        
       </div>
     </div>
   )

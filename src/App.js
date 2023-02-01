@@ -20,6 +20,7 @@ import HowToTakeSoil from './SoilTestContainer/TestingServices/HowToTakeSoil';
 import { onAuthStateChanged} from 'firebase/auth';
 import { auth } from './firebase';
 import Query from './MainContainer/Query';
+import FarmerDetailsPage from './BussinessContainer/FarmerDetailsPage';
 // import PageNotFound from './PageNotFound';
 
 
@@ -59,6 +60,7 @@ function App() {
         <Route path='/SoilSample' element={<HowToTakeSoil/>}></Route>
         <Route path='/SoilReportUpload' element={<SoilTestPdfUploader/>}></Route>
         <Route path='/Query' element={<Query/>}></Route>
+        <Route path='/FarmerDetails' element={<FarmerDetailsPage/>}></Route>
       </Routes>
       </BrowserRouter>
     </div>

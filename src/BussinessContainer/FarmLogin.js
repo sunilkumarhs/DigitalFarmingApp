@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 import classNames from 'classnames';
 import Col from 'react-bootstrap/Col';
-import { signInWithEmailAndPassword,onAuthStateChanged } from 'firebase/auth';
+import {signInWithEmailAndPassword} from 'firebase/auth';
 import { auth } from '../firebase';
+import {getDocs, collection} from 'firebase/firestore';
+import { db } from '../firebase';
 
 const FarmLogin = () => {
     const [username, setUsername] = useState("");
@@ -13,11 +15,31 @@ const FarmLogin = () => {
     const [types, setTypes] = useState("");
    
     const navigate = useNavigate();
-    // const [user, setUser] = useState({});
+    const [farmers, setFarmers] = useState([]);
+    const [farmUser, setFarmUser] = useState([]);
+    const farmerCollectionRef = collection(db, "farmers");
 
-    onAuthStateChanged(auth, (currentUser) => {
-    //   setUser(currentUser);
-    });
+    useEffect(() => {
+      const getFarmers = async () => {
+        const data = await getDocs(farmerCollectionRef);
+        setFarmers(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
+      };
+      getFarmers();
+    },[])
+
+    useEffect(() => {
+      const getFarm = async () => {
+        setFarmUser(
+          farmers.filter(item =>
+            Object.values(item)
+              .join('')
+              .toLowerCase()
+              .includes(username.toLowerCase())
+          )
+        );
+      }
+      getFarm();
+    }, [username, farmers]);
 
     const login = async () => {
         if(types.length !== 0) {
@@ -27,13 +49,19 @@ const FarmLogin = () => {
                     username,
                     password
                 );
-                console.log(user);
+                console.log(user); 
+                
                 alert("Login Successfull");
-                        if(types.length === 6){
-                        navigate('/FarmersPage');
-                        }else{
-                          navigate('/BuyersPage');
-                        }
+                if(types.length === 6 ){
+                  if(farmUser.length !== 0 ){
+                    navigate('/FarmersPage');
+                    }else{
+                      navigate('/FarmerDetails');
+                    }
+                } else {
+                  navigate('/BuyersPage');
+                }
+                        
             } catch (error) {
                 console.log(error.message);
                 alert(error.message);
@@ -42,39 +70,6 @@ const FarmLogin = () => {
             alert("Select the type to login");
         }
     }
-
-    // const login = (event) => {
-    //     if(types.length !== 0) {
-    //     if(username.length !== 0) {
-    //       if(payload) {
-    //         dispatch({
-    //             type : 'LOGIN',
-    //             payload
-    //         })
-    //         alert("Login Successfull");
-    //         if(types.length === 6){
-    //         navigate('/FarmersPage');
-    //         }else{
-    //           navigate('/BuyersPage');
-    //         }
-    //       }else{
-    //           alert('Incorrect Credential !!')
-    //           event.preventDefault();
-    //           document.querySelector('#user').focus();
-    //       }
-    //     }else{
-    //       alert("You are not registered!")
-    //       event.preventDefault();
-    //       document.querySelector('#user').focus();
-    //     }
-    //   }else {
-    //     alert("Please select the proper login type!")
-    //       event.preventDefault();
-    //       document.querySelector('#type').focus();
-    //   }
-        
-    // }
-
     const RedisterHandler = () => {
       navigate('/Registeration');
     }
@@ -101,7 +96,7 @@ const FarmLogin = () => {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
-          <Form.Control type="text" placeholder="Enter Username" id='user' onChange={(e) =>setUsername(e.target.value)} />
+          <Form.Control type="text" placeholder="Enter Username" value={username} id='user' onChange={(e) =>setUsername(e.target.value)} />
         </Form.Group>
         <Form.Group className="mb-3" onChange={(e) =>setPassword(e.target.value)} >
           <Form.Label>Password</Form.Label>

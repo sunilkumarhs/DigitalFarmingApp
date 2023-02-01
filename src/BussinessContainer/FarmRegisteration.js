@@ -1,13 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {createUserWithEmailAndPassword, signOut} from 'firebase/auth';
 import {auth} from '../firebase';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-// import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import NavBar1 from '../NavBarContainer/NavBar1';
@@ -17,21 +16,17 @@ function FarmRegisteration() {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [conpass, setConPass] = useState();
-    const [types, setTypes] = useState("");
     const navigate = useNavigate();
 
     const register = async () => {
-      if(types.length !== 0) {
         if(username !== null) {
           if(password === conpass) {
               try {
                 const user = await createUserWithEmailAndPassword(auth, username, password);
                 console.log(user);
-                if(types.length === 6){
-                  navigate('/FarmersPage');
-                  }else{
-                    navigate('/BuyersPage');
-                  }
+                alert("Registeration Succesfull");
+                await signOut(auth);
+                navigate('/FarmLogin');
                 }catch (error) {
                 console.log(error.message);
                 alert(error.message);
@@ -42,9 +37,6 @@ function FarmRegisteration() {
         } else {
           alert("Please provide the email address")
         }
-      } else {
-        alert("Select the type to login");
-      }
     }
   return (
     <div>
@@ -59,14 +51,6 @@ function FarmRegisteration() {
             <Card.Text>
             Please provide your detail to Login.
             </Card.Text>
-            <Form.Group as={Col}>
-          <Form.Label>Login As</Form.Label>
-          <Form.Select  value={types} onChange={(e) =>setTypes(e.target.value)} id="type">
-            <option value="">Choose...</option>
-            <option value="Farmer" >Farmer</option>
-            <option value="Buyer" >Buyer</option>
-          </Form.Select>
-        </Form.Group>
         <Row className="mb-3">
         <Form.Group as={Col} md="4">
           <Form.Label>E-mail</Form.Label>

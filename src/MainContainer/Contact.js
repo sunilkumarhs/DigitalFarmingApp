@@ -29,8 +29,6 @@ function Contact() {
         } else {
             alert("Provide the required field details!!")
         }
-       
-        
     }
 
   return (
