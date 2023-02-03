@@ -4,7 +4,7 @@ import Topbar from './Topbar'
 import {addDoc, collection} from 'firebase/firestore';
 import { db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
-import NavBar2 from '../NavBarContainer/NavBar2';
+import NavBar from '../NavBarContainer/NavBar';
 
 
 function Contact() {
@@ -35,7 +35,7 @@ function Contact() {
     <div>
       <Topbar/>
       <div>
-      <NavBar2/>
+        <NavBar/>
       </div>
       {/* <!-- Contact Start --> */}
     <div className="container-fluid py-5">

@@ -2,10 +2,18 @@
   text-align: center;
 }
 
+body{
+  background: aqua;
+}
 
 .nav{
   margin-top: 1rem;
   
+}
+
+.farmsec {
+  height: 100;
+  background:linear-gradient(230deg,rgb(241, 40, 40),rgb(220, 212, 51));
 }
 
 .login{

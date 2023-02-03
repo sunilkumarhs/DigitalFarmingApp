@@ -7,14 +7,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import NavBar1 from '../NavBarContainer/NavBar1';
-import {addDoc, collection} from 'firebase/firestore';
+import {collection, updateDoc} from 'firebase/firestore';
 import { db, auth } from '../firebase';
 
+function Updateprofile() {
 
-function FarmerDetailsPage() {
     const [validated, setValidated] = useState(false);
-   
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [phonenumber, setPhone] = useState("");
@@ -34,6 +32,7 @@ function FarmerDetailsPage() {
          box = true;
     };
 
+
     const submit =  async () => { 
         setValidated(true);
             if(types.length !== 0) {
@@ -46,7 +45,7 @@ function FarmerDetailsPage() {
                                         if(adharnumber.length === 12) {
                                             if(fid.length >= 8) {
                                                         if(box === true) {
-                                                            await addDoc(farmerCollectionRef, {AgricultureType: types,
+                                                            await updateDoc(farmerCollectionRef, {AgricultureType: types,
                                                                 UserID: auth?.currentUser?.email,
                                                                  Name: name,
                                                                   Address: address,
@@ -97,14 +96,16 @@ function FarmerDetailsPage() {
                 document.querySelector("#type").focus();
             }
         }
-    
+
+        const LayoutHandler = () => {
+            navigate('/FarmersPage');
+          }
+
   return (
     <div>
-        <div>
-            <NavBar1 />
-        </div>
-      <div className='container'>
+       <div className='container'>
         <Card className='cards'>
+        <button type="button" className="btn-close" aria-label="Close" onClick={LayoutHandler}></button>
         <Card.Header as="h5">REGISTER</Card.Header>
         <Card.Body>
             <Card.Title>Registeration Form</Card.Title>
@@ -257,4 +258,4 @@ function FarmerDetailsPage() {
   )
 }
 
-export default FarmerDetailsPage
+export default Updateprofile

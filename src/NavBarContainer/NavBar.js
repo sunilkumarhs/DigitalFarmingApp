@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -6,17 +6,10 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import logo from '../Images/main_images/farmerlogo1.png';
-// import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const NavBar = () => {
-  const [user, setUser] = useState({});
-  // const navigate = useNavigate();
-
-  onAuthStateChanged(auth, (currentUser) =>{
-    setUser(currentUser);
-  })
 
   const logout = async () => {
     await signOut(auth);
@@ -55,10 +48,10 @@ const NavBar = () => {
           <Nav.Link href='/Contact' style={{textDecoration:'none'}}><Navbar.Brand style={{fontSize:'1.5rem'}}>Contact</Navbar.Brand></Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        {user?.email}
+        {auth?.currentUser?.email}
         <Form className="d-flex" role="login">
               {
-                user
+                auth.currentUser
                 ? <Nav.Link href='/'><Button id="login" variant="outline-danger" onClick={logout}>LOGOUT</Button></Nav.Link>
                 : <Nav.Link href='/FarmLogin'><Button id="login" variant="outline-success">LOGIN</Button></Nav.Link>
             }
