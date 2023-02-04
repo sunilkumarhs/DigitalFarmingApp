@@ -15,6 +15,7 @@ function FarmersPage() {
   
   const [farmers, setFarmers] = useState([]);
   const [farmer, setFarmer] = useState([]);
+  const navigate = useNavigate();
 
   const user = auth?.currentUser?.email;
 
@@ -43,7 +44,7 @@ function FarmersPage() {
   }, [user, farmers]);
 
   const handleUpdate = () => {
-    
+    navigate('/UpdateProfile');
   }
   return (
     <div>
