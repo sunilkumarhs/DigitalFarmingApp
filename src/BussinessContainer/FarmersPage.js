@@ -10,11 +10,16 @@ import Card from 'react-bootstrap/Card';
 import { Avatar } from '@mui/material'
 import { db, auth } from '../firebase';
 import {collection, getDocs} from 'firebase/firestore';
+import { storage } from '../firebase/index';
+import { getDownloadURL, listAll, ref} from 'firebase/storage';
 
 function FarmersPage() {
   
   const [farmers, setFarmers] = useState([]);
   const [farmer, setFarmer] = useState([]);
+  const [photoUrl, setPhotoUrl] = useState([]);
+  // const [urls, seturl] = useState(false);
+  // const photo = null;
   const navigate = useNavigate();
 
   const user = auth?.currentUser?.email;
@@ -43,6 +48,37 @@ function FarmersPage() {
     getFarm();
   }, [user, farmers]);
 
+  useEffect(() => {
+    const getPhotoUrl = async () => {
+      const proRef = ref(storage, "profile/");
+      listAll(proRef).then((res) => {
+        res.items.forEach((itemRef) => {
+          // console.log(itemRef);
+          getDownloadURL(itemRef).then((url) => {
+            if(url && url.length > 0) {
+              // console.log("photourl:" +url);
+              if(itemRef.name === auth?.currentUser?.uid) {
+                setPhotoUrl({
+                  url:url,
+                });
+                // seturl(true);
+              } 
+              // else {
+              //   setPhotoUrl([]);
+              //   // seturl(false);
+              // }
+            }
+          })
+        })
+      })
+    }
+    getPhotoUrl();
+  },[])
+
+  // console.log(photoUrl);
+  // if(urls !== false) {
+  //    photo = photoUrl.map((p) => p.url);
+  // }
   const handleUpdate = () => {
     navigate('/UpdateProfile');
   }
@@ -74,11 +110,22 @@ function FarmersPage() {
                   <h1>Profile</h1>
                   <div className='pb-4' style={{justifyContent: "center", display: "flex"}}>
                   <Avatar
-                    alt="farmer_img"
-                    
-                    // src={}
-                    sx={{ width: 100, height: 100 }}
-                  />
+                          alt="farmer_img"
+                          src={photoUrl.url}
+                          sx={{ width: 100, height: 100 }}
+                        />
+                    {/* {
+                      urls
+                      ?  <Avatar
+                          alt="farmer_img"
+                          src={photoUrl.url}
+                          sx={{ width: 100, height: 100 }}
+                        />
+                      : <Avatar
+                          alt="farmer_img"
+                          sx={{ width: 100, height: 100 }}
+                        />
+                    } */}
                   </div>
                   </div>
                   <div className='pb-4'>

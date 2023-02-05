@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import {collection, updateDoc, getDocs, doc} from 'firebase/firestore';
 import proimg from '../Images/user.jpg';
-import { db, auth } from '../firebase';
+import { db, auth} from '../firebase';
+import { storage } from '../firebase/index';
+import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import { Avatar } from '@mui/material';
 
 function Updateprofile() {
@@ -41,6 +43,10 @@ function Updateprofile() {
       }
       getFarm();
     }, [user, farmers]);
+
+    useEffect(() => {
+
+    })
     
     const [validated, setValidated] = useState(false);
     var [name, setName] = useState("");
@@ -52,6 +58,8 @@ function Updateprofile() {
     var [district, setDistrict] = useState("");
     var [state, setState] = useState("");
     var [types, setTypes] = useState("");
+    const [file, setFile] = useState(null);
+    const [photoUrl, setPhotoUrl] = useState([]);
     const [fType, setFType] = useState(false);
     const [fName, setFName] = useState(false);
     const [fAddress, setFAddress] = useState(false);
@@ -63,6 +71,41 @@ function Updateprofile() {
     const [fFid, setFFid] = useState(false);
   
     const navigate = useNavigate();
+
+    if(file !== null) {
+      const proRef = ref(storage, `profile/${auth?.currentUser?.uid}`);
+      uploadBytes(proRef, file).then(() => {
+        alert("Profile photo uploaded successfully");
+        setFile(null);
+      })
+    }
+
+    useEffect(() => {
+      const getPhotoUrl = async () => {
+        const proRef = ref(storage, "profile/");
+        listAll(proRef).then((res) => {
+          res.items.forEach((itemRef) => {
+            // console.log(itemRef);
+            getDownloadURL(itemRef).then((url) => {
+              if(url && url.length > 0) {
+                // console.log("photourl:" +url);
+                if(itemRef.name === auth?.currentUser?.uid) {
+                  setPhotoUrl({
+                    url:url
+                  });
+                } 
+                // else {
+                //   setPhotoUrl([]);
+                // }
+              }
+            })
+          })
+        })
+        
+      }
+
+      getPhotoUrl();
+    }, [])
 
     
 
@@ -171,14 +214,16 @@ function Updateprofile() {
         <Card.Header as="h1"  style={{textAlign:'center'}}>Farmer-Profile</Card.Header>
         <Card.Body>
             <Card.Title as='h2' style={{textAlign:'center'}}>Profile Update</Card.Title>
-            <Card.Text as='h5'  style={{textAlign:'center'}}>
+            <Card.Text as='h5'  style={{textAlign:'center'}} className='pb-4'>
               If any Changes, Update Here.
             </Card.Text>
-            <div className='pb-3' style={{justifyContent: "center", display: "flex"}}>
+            <div className='pb-5' style={{justifyContent: "center", display: "flex"}}>
+            <input type="file" id='pho' onChange={(event) => setFile(event.target.files[0])}/>
                   <Avatar
+                    id='img'
                     alt="farmer_img"
-                    src={proimg}
-                    sx={{ width: 100, height: 100 }}
+                    src={photoUrl.url}
+                    sx={{ width: 150, height: 150 }}
                   />
             </div>
             <Form noValidate validated={validated} >
