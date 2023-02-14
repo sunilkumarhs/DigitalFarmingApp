@@ -9,10 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import { Avatar } from '@mui/material'
 import { db, auth } from '../firebase';
-import {collection, getDocs,doc} from 'firebase/firestore';
+import {collection, getDocs,doc, getDoc} from 'firebase/firestore';
 import { storage } from '../firebase/index';
 import { getDownloadURL, listAll, ref} from 'firebase/storage';
 import Table from 'react-bootstrap/Table';
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 function BuyersPage() {
   const [buyers, setBuyers] = useState([]);
@@ -28,12 +29,29 @@ function BuyersPage() {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState([]);
   const [srchPrds, setSrchPrds] = useState([]);
+  const [disPrds, setDisPrds] = useState([]);
+  const [disQPrds, setDisQPrds] = useState([]);
+  const [disPPrds, setDisPPrds] = useState([]);
+  const [seller, setSeller] = useState('');
+  const [con, setCon] = useState(false);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
   const navigate = useNavigate();
 
   const user = auth?.currentUser?.email;
 
+  const farmerCollectionRef = collection(db,"farmers")
   const buyerCollectionref = collection(db,"buyers")
   const productCollectionRef = collection(db, "AgriProducts")
+
+  useEffect (() => {
+    const getFarmers = async () => {
+      const data = await getDocs(farmerCollectionRef);
+      setFarmers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    }
+    getFarmers();
+  }, [])
 
   useEffect (() => {
     const getbuyers = async () => {
@@ -65,10 +83,9 @@ function BuyersPage() {
     getBuy();
   }, [user, buyers]);
   // const handleSearch = () => {
-    
   // }
+
   // const handleSearch = () => {
-  //   setSrchPrd(pType,pName);
   //   const getPrd = async () => {
   //     setProduct(
   //       products.filter(item => 
@@ -82,57 +99,143 @@ function BuyersPage() {
   //   getPrd();
   // }
 
-   const handleSearch = () => {
-    setSrchPrds(pType,pName);
+  //  const handleSearch = () => {
+  //   const getPrd = async () => {
+  //     setProduct(
+  //       products.filter(item => 
+  //         srchPrds.every(srchPrd =>
+  //         Object.values(item)
+  //         .join('')
+  //         .toLowerCase()
+  //         .includes(pType.toLowerCase())
+  //         )
+  //         )
+  //     )
+  //   }
+  //   getPrd();
+  // }
+
+  useEffect (() => {
     const getPrd = async () => {
       setProduct(
         products.filter(item => 
-          srchPrds.every(srchPrd =>
           Object.values(item)
           .join('')
           .toLowerCase()
-          .includes(srchPrd.toLowerCase())
-          )
+          .includes(pType.toLowerCase())
           )
       )
     }
     getPrd();
+  }, [pType, products]);
+
+  useEffect (() => {
+    const getPrd = async () => {
+      setProduct(
+        products.filter(item => 
+          Object.values(item)
+          .join('')
+          .toLowerCase()
+          .includes(pName.toLowerCase())
+          )
+      )
+    }
+    getPrd();
+    
+  }, [pName, products]);
+
+  useEffect (() => {
+    const getPrd = async () => {
+      setDisPrds(
+        srchPrds.filter(item => 
+          Object.values(item)
+          .join('')
+          .toLowerCase()
+          .includes(pGrade.toLowerCase())
+          )
+      )
+    }
+    getPrd();
+    
+  }, [pGrade, srchPrds]);
+
+  useEffect (() => {
+    const getPrd = async () => {
+      setDisQPrds(
+        product.filter(item => 
+          Object.values(item)
+          .join('')
+          .toLowerCase()
+          .includes(pQuant.toLowerCase())
+          )
+      )
+    }
+    getPrd();
+    
+  }, [pQuant, product]);
+
+  useEffect (() => {
+    const getPrd = async () => {
+      setDisPPrds(
+        product.filter(item => 
+          Object.values(item)
+          .join('')
+          .toLowerCase()
+          .includes(pPrice.toLowerCase())
+          )
+      )
+    }
+    getPrd();
+    
+  }, [pPrice, product]);
+
+  const handleSearch = () => {
+    if(pGrade.length !== 0 && con === true) {
+      if(disPrds.length !== 0) {
+        setSrchPrds(disPrds);
+      } else {
+        alert("No such porduct in the list!!");
+      }
+    } else if(pQuant.length !== 0 && con === true) {
+      if(disQPrds.length !== 0) {
+        setSrchPrds(disQPrds);
+      } else {
+        alert("No such porduct in the list!!");
+      }
+    } else if(pPrice.length !== 0 && con === true) {
+      if(disPPrds.length !== 0) {
+        setSrchPrds(disPPrds);
+      } else {
+        alert("No such porduct in the list!!");
+      }
+    } else if(product.length == 0) {
+        alert("No such porduct in the list!!");
+      } else {
+        setSrchPrds(product);
+        setCon(true);
+      } 
   }
 
-  // useEffect (() => {
-  //   const getPrd = async () => {
-  //     setProduct(
-  //       products.filter(item => 
-  //         Object.values(item)
-  //         .join('')
-  //         .toLowerCase()
-  //         .includes(pType.toLowerCase())
-  //         )
-  //     )
-  //   }
-  //   getPrd();
-  // }, [pType, products]);
+  const handleOwner = async (UserID) => {
+    setSeller(UserID);
+    setShow(true);
+  }
 
-  // useEffect (() => {
-  //   const getPrd = async () => {
-  //     setProduct(
-  //       products.filter(item => 
-  //         Object.values(item)
-  //         .join('')
-  //         .toLowerCase()
-  //         .includes(pName.toLowerCase())
-  //         )
-  //     )
-  //   }
-  //   getPrd();
-    
-  // }, [pName, products]);
+  useEffect(() => {
+    const getFarm = async () => {
+      setFarmer(
+        farmers.filter(item =>
+          Object.values(item)
+            .join('')
+            .toLowerCase()
+            .includes(seller.toLowerCase())
+        )
+      );
+    }
+    getFarm();
+  }, [seller, farmers]);
 
-  // const handleSearch = () => {
-  //   if(product.length == 0) {
-  //     alert("No such porduct in the list!!");
-  //   }
-  // }
+ 
 
   useEffect(() => {
     const getPhotoUrl = async () => {
@@ -153,8 +256,15 @@ function BuyersPage() {
     }
     getPhotoUrl();
   },[])
+
+ 
+
   const handleUpdate = () => {
     navigate('/BuyerUpdateProfile');
+  }
+
+  const handleClear = () => {
+    window.location.reload(false);
   }
   return (
     <div>
@@ -301,12 +411,9 @@ function BuyersPage() {
                             <Form.Label>Quality Grade</Form.Label>
                             <Form.Select required value={pGrade} onChange={(e) => setPGrade(e.target.value)}>
                               <option value="">choose..</option>
-                              <option value="A+">A+</option>
-                              <option value="A">A</option>
-                              <option value="B+">B+</option>
-                              <option value="B">B</option>
-                              <option value="C+">C+</option>
-                              <option value="C">C</option>
+                              <option value="AGrade">A</option>
+                              <option value="BGrade">B</option>
+                              <option value="CGrade">C</option>
                             </Form.Select>
                           </Form.Group>
                           </Row>
@@ -327,6 +434,7 @@ function BuyersPage() {
                           </Form.Group>
                         </Row>
                       <Button type="button" onClick={handleSearch}>Search Product</Button>
+                      <Button type="button" onClick={handleClear}>Clear Search</Button>
                     </Form>
                   </Card.Body>
                 </Card>  
@@ -345,21 +453,145 @@ function BuyersPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {product.map((prd) => {
-                        return (
-                          <tr key={prd.id}>
-                          <td>1</td>
-                          <td>{prd.ProductType}</td>
-                          <td>{prd.ProductName}</td>
-                          <td>{prd.QualityGrade}</td>
-                          <td>{prd.Quantity}</td>
-                          <td>{prd.Price}</td>
-                          <td><Button>Delete</Button></td>
-                        </tr>
-                        )
-                    })}
+                  {srchPrds.map((prd) => {
+                              return (
+                                <tr key={prd.id}>
+                                <td>1</td>
+                                <td>{prd.ProductType}</td>
+                                <td>{prd.ProductName}</td>
+                                <td>{prd.QualityGrade}</td>
+                                <td>{prd.Quantity}</td>
+                                <td>{prd.Price}</td>
+                                <td><Button onClick={() => {handleOwner(prd.UserID);}}>Details</Button></td>
+                              </tr>
+                              )
+                          })}
+                    {/* {
+                      con === true
+                      ?  {srchPrds.map((prd) => {
+                              return (
+                                <tr key={prd.id}>
+                                <td>1</td>
+                                <td>{prd.ProductType}</td>
+                                <td>{prd.ProductName}</td>
+                                <td>{prd.QualityGrade}</td>
+                                <td>{prd.Quantity}</td>
+                                <td>{prd.Price}</td>
+                                <td><Button>Delete</Button></td>
+                              </tr>
+                              )
+                          })}
+                      : null
+                    } */}
                   </tbody>
                 </Table> 
+
+                <Offcanvas show={show} onHide={handleClose}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Farmer Details</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+        <div className='pb-4'>
+                  {farmer.map(farm => (
+                    <div key={farm.id}> 
+                    <Card className='cards'>
+                  <Card.Body>
+                  <Row className='mb-2'> 
+                    <Form.Group as={Col} md="12">
+                        <Form.Label>UserID</Form.Label>
+                        <InputGroup hasValidation>
+                        <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
+                      <Form.Control
+                        placeholder={farm.UserID}
+                        aria-describedby="inputGroupPrepend"
+                        disabled
+                      />
+                      </InputGroup>
+                    </Form.Group>
+                  </Row>
+                  <Row className="mb-2">
+                    <Form.Group as={Col} md="8" >
+                    <Form.Label>Name</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        id='name'
+                        placeholder={farm.Name}
+                        disabled
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} md="12">
+                      <Form.Label>Address</Form.Label>
+                        <Form.Control
+                          required
+                          type="text"
+                          placeholder={farm.Address}
+                          disabled
+                        />
+                    </Form.Group>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Form.Group as={Col} md="6" >
+                      <Form.Label>District</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder={farm.District}
+                        disabled
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} md="6" >
+                      <Form.Label>State</Form.Label>
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder={farm.State}
+                        disabled
+                      />
+                      </Form.Group>
+                  </Row>
+                  <Row className='mb-2'>
+                    <Form.Group as={Col} md="6">
+                        <Form.Label>PinCode</Form.Label>
+                        <Form.Control type="number" placeholder={farm.PinCode}
+                        disabled
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} md="6" >
+                      <Form.Label>Mobile Number</Form.Label>
+                      <Form.Control type="number" placeholder={farm.MobileNumber}
+                      disabled 
+                      />
+                    </Form.Group>
+                  </Row>
+                  <Row className="mb-2">
+                    <Form.Group as={Col} md="6" >
+                      <Form.Label>Adhar Number</Form.Label>
+                      <Form.Control type="number" placeholder={farm.AdharNumber}
+                      disabled
+                      />
+                    </Form.Group>
+                    <Form.Group as={Col} md="8">
+                      <Form.Label>Farmer ID</Form.Label>
+                      <InputGroup hasValidation>
+                        <InputGroup.Text id="inputGroupPrepend">ID</InputGroup.Text>
+                        <Form.Control
+                          type="text"
+                          placeholder={farm.FarmerID}
+                          aria-describedby="inputGroupPrepend"
+                          disabled
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Row>
+                  </Card.Body>
+                  </Card>
+                    </div>
+                  ))}
+                  </div>
+        </Offcanvas.Body>
+      </Offcanvas>
+
               </div>
               <div className="col-lg-4 pb-5">
                 <div style={{backgroundColor:'lightgray',padding:'1rem',

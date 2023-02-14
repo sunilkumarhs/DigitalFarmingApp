@@ -294,12 +294,9 @@ function FarmersPage() {
                             <Form.Label>Quality Grade</Form.Label>
                             <Form.Select required value={pGrade} onChange={(e) => setPGrade(e.target.value)}>
                               <option value="">choose..</option>
-                              <option value="A+">A+</option>
-                              <option value="A">A</option>
-                              <option value="B+">B+</option>
-                              <option value="B">B</option>
-                              <option value="C+">C+</option>
-                              <option value="C">C</option>
+                              <option value="AGrade">A</option>
+                              <option value="BGrade">B</option>
+                              <option value="CGrade">C</option>
                             </Form.Select>
                           </Form.Group>
                           </Row>
