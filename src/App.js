@@ -22,6 +22,8 @@ import { auth } from './firebase';
 import Query from './MainContainer/Query';
 import FarmerDetailsPage from './BussinessContainer/FarmerDetailsPage';
 import Updateprofile from './BussinessContainer/Updateprofile';
+import BuyersDetailsPage from './BussinessContainer/BuyersDetailsPage';
+import BuyerUpdateProfile from './BussinessContainer/BuyerUpdateProfile';
 // import PageNotFound from './PageNotFound';
 
 
@@ -42,6 +44,8 @@ function App() {
           <Routes>
             <Route path='/FarmersPage' element={<FarmersPage/>}></Route>
             <Route path='/BuyersPage' element={<BuyersPage/>}></Route>
+            <Route path='/FarmerDetails' element={<FarmerDetailsPage/>}></Route>
+            <Route path='/BuyerDetails' element={<BuyersDetailsPage/>}></Route>
           </Routes>
         ) : null
       }
@@ -61,8 +65,8 @@ function App() {
         <Route path='/SoilSample' element={<HowToTakeSoil/>}></Route>
         <Route path='/SoilReportUpload' element={<SoilTestPdfUploader/>}></Route>
         <Route path='/Query' element={<Query/>}></Route>
-        <Route path='/FarmerDetails' element={<FarmerDetailsPage/>}></Route>
         <Route path='/UpdateProfile' element={<Updateprofile/>}></Route>
+        <Route path='/BuyerUpdateProfile' element={<BuyerUpdateProfile/>}></Route>
       </Routes>
       </BrowserRouter>
     </div>

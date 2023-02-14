@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -11,15 +11,13 @@ import NavBar1 from '../NavBarContainer/NavBar1';
 import {addDoc, collection} from 'firebase/firestore';
 import { db, auth } from '../firebase';
 
-
-function FarmerDetailsPage() {
+function BuyersDetailsPage() {
     const [validated, setValidated] = useState(false);
    
-    const [name, setName] = useState("");
+    const [cname, setCName] = useState("");
     const [address, setAddress] = useState("");
     const [phonenumber, setPhone] = useState("");
-    const [adharnumber, setAdhar] = useState("");
-    const [fid, setFid] = useState("");
+    const [cmail, setMail] = useState("");
     const [pincode, setPinCode] = useState("");
     const [district, setDistrict] = useState("");
     const [state, setState] = useState("");
@@ -27,42 +25,39 @@ function FarmerDetailsPage() {
     const [agree, setAgree] = useState(false);
     const navigate = useNavigate();
 
-    const farmerCollectionRef = collection(db, "farmers");
+    const buyerCollectionRef = collection(db, "buyers");
+
+    const mail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     const handleCkeck = () => {
-         setAgree(!agree);
+        setAgree(!agree);
     };
 
     const submit =  async () => { 
         setValidated(true);
             if(types.length !== 0) {
-            if(name.length !== 0) {
+            if(cname.length !== 0) {
                 if(address.length !== 0) {
                     if(district.length !== 0) {
                         if(state.length !== 0 ) {
                             if(pincode.length === 6) {
                                 if(phonenumber.length === 10) {
-                                        if(adharnumber.length === 12) {
-                                            if(fid.length >= 8) {
-                                                            await addDoc(farmerCollectionRef, {AgricultureType: types,
+                                        if(mail.test(cmail)===true) {
+                                                            await addDoc(buyerCollectionRef, {BuyerType: types,
                                                                 UserID: auth?.currentUser?.email,
-                                                                 Name: name,
-                                                                  Address: address,
+                                                                 CompanyName: cname,
+                                                                  CompanyAddress: address,
                                                                   District: district,
                                                                    State: state,
                                                                     PinCode: pincode,
-                                                                     MobileNumber: phonenumber,
-                                                                      AdharNumber: adharnumber,
-                                                                        FarmerID: fid});
+                                                                     ContactNumber: phonenumber,
+                                                                      CompanyMail: cmail,
+                                                                });
                                                               alert("Successfully Registered");
-                                                              navigate('/FarmersPage');   
-                                            }else {
-                                              alert("Please enter the proper username");
-                                                document.querySelector('#user').focus();
-                                            }
+                                                              navigate('/BuyersPage');   
                                         }else {
-                                          alert("Please enter the proper adhar number");
-                                            document.querySelector('#adhar').focus();
+                                          alert("Please enter the proper mail address!!");
+                                            document.querySelector('#mail').focus();
                                         }
                                 }else {
                                   alert("please povide the valid mobile number!");
@@ -91,28 +86,27 @@ function FarmerDetailsPage() {
                 document.querySelector("#type").focus();
             }
         }
-    
   return (
     <div>
-        <div>
+      <div>
             <NavBar1 />
         </div>
       <div className='container'>
         <Card className='cards'>
         <Card.Header as="h5">REGISTER</Card.Header>
         <Card.Body>
-            <Card.Title>Farmers Infomation Form</Card.Title>
+            <Card.Title>Buyers Infomation Form</Card.Title>
             <Card.Text>
             Please provide your detail to Login.
             </Card.Text>
             <Form noValidate validated={validated} >
              <Row className='mb-3'>   
             <Form.Group as={Col} md="4" >
-          <Form.Label>Agriculture Type</Form.Label>
+          <Form.Label>Buyer Type</Form.Label>
           <Form.Select  value={types} onChange={(e) =>setTypes(e.target.value)} id="type" >
             <option value="">Choose..</option>
-            <option value="Subsistence Agriculture">Subsistence Agriculture</option>
-            <option value="Industrialized Agriculture">Industrialized Agriculture</option>
+            <option value="Retailer">Retailer</option>
+            <option value="Wholesaler">Wholesaler</option>
           </Form.Select>
         </Form.Group>
         <Form.Group as={Col} md="6">
@@ -132,22 +126,22 @@ function FarmerDetailsPage() {
         </Row>
       <Row className="mb-3">
         <Form.Group as={Col} md="4" >
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Company/Shope Name</Form.Label>
           <Form.Control
             required
             type="text"
             id='name'
             placeholder="Name"
-            value={name} onChange={(event) => setName(event.target.value)}
+            value={cname} onChange={(event) => setCName(event.target.value)}
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} md="4">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>Address of Comapny</Form.Label>
           <Form.Control
             required
             type="text"
-            placeholder="City"
+            placeholder="Address"
             id='city'
             value={address} onChange={(event) => setAddress(event.target.value)}
           />
@@ -155,9 +149,9 @@ function FarmerDetailsPage() {
         </Form.Group>
         <Form.Group as={Col} md="4" >
           <Form.Label>District</Form.Label>
-          <Form.Select  value={district} onChange={(e) =>setDistrict(e.target.value)} id="dist" >
+          <Form.Select value={district} onChange={(e) =>setDistrict(e.target.value)} id="dist">
             <option value="">Choose..</option>
-            <option value="Bagalkot ">Bagalkot </option>
+            <option value="Bengaluru ">Bengaluru </option>
             <option value="Ballari ">Ballari </option>
             <option value="Chikballapur ">Chikballapur  </option>
             <option value="Chitradurga ">Chitradurga </option>
@@ -194,39 +188,22 @@ function FarmerDetailsPage() {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} md="4" >
-          <Form.Label>Mobile Number</Form.Label>
+          <Form.Label>Contact Number</Form.Label>
           <Form.Control type="number" placeholder="MobileNumber" id='mobile'
           value={phonenumber} onChange={(event) => setPhone(event.target.value)} required />
           <Form.Control.Feedback type="invalid">
-            Please provide a valid MobileNumber.
+            Please provide a valid Contact-Number.
           </Form.Control.Feedback>
         </Form.Group>
         </Row>
         <Row className="mb-3">
         <Form.Group as={Col} md="4" >
-          <Form.Label>Adhar Number</Form.Label>
-          <Form.Control type="number" placeholder="AdharNumber" id='adhar'
-          value={adharnumber} onChange={(event) => setAdhar(event.target.value)} required />
+          <Form.Label>Company Mail-Id</Form.Label>
+          <Form.Control type="text" placeholder="Company Mail-ID" id='mail'
+          value={cmail} onChange={(event) => setMail(event.target.value)} required />
           <Form.Control.Feedback type="invalid">
-            Please provide a valid AdharNumber.
+            Please provide a valid mail-id.
           </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group as={Col} md="4">
-          <Form.Label>Farmer ID</Form.Label>
-          <InputGroup hasValidation>
-            <InputGroup.Text id="inputGroupPrepend">ID</InputGroup.Text>
-            <Form.Control
-              type="text"
-              placeholder="Username"
-              id='user'
-              aria-describedby="inputGroupPrepend"
-              value={fid} onChange={(event) => setFid(event.target.value)}
-              required
-            />
-            <Form.Control.Feedback type="invalid">
-              Please provide the valid Farmer ID.
-            </Form.Control.Feedback>
-          </InputGroup>
         </Form.Group>
       </Row>
       <Form.Group className="mb-3">
@@ -251,4 +228,4 @@ function FarmerDetailsPage() {
   )
 }
 
-export default FarmerDetailsPage
+export default BuyersDetailsPage

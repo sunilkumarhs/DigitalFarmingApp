@@ -16,8 +16,11 @@ const FarmLogin = () => {
    
     const navigate = useNavigate();
     const [farmers, setFarmers] = useState([]);
+    const [buyers, setBuyers] = useState([]);
+    const [buyUser, setBuyUser] = useState([]);
     const [farmUser, setFarmUser] = useState([]);
     const farmerCollectionRef = collection(db, "farmers");
+    const buyerCollectionRef = collection(db, "buyers");
 
     useEffect(() => {
       const getFarmers = async () => {
@@ -26,6 +29,28 @@ const FarmLogin = () => {
       };
       getFarmers();
     },[])
+
+    useEffect(() => {
+      const getBuyers = async () => {
+        const data = await getDocs(buyerCollectionRef);
+        setBuyers(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
+      };
+      getBuyers();
+    }, [])
+
+    useEffect(() => {
+      const getBuy = async () => {
+        setBuyUser(
+          buyers.filter(item =>
+            Object.values(item)
+              .join('')
+              .toLowerCase()
+              .includes(username.toLowerCase())
+          )
+        );
+      }
+      getBuy();
+    }, [username, buyers]);
 
     useEffect(() => {
       const getFarm = async () => {
@@ -59,7 +84,11 @@ const FarmLogin = () => {
                       navigate('/FarmerDetails');
                     }
                 } else {
-                  navigate('/BuyersPage');
+                  if(buyUser.length !== 0) {
+                    navigate('/BuyersPage'); 
+                  } else {
+                    navigate('/BuyerDetails');
+                  }
                 }
                         
             } catch (error) {

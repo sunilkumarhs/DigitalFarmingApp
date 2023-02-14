@@ -8,7 +8,6 @@ import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import {collection, updateDoc, getDocs, doc} from 'firebase/firestore';
-import proimg from '../Images/user.jpg';
 import { db, auth} from '../firebase';
 import { storage } from '../firebase/index';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
@@ -85,18 +84,13 @@ function Updateprofile() {
         const proRef = ref(storage, "profile/");
         listAll(proRef).then((res) => {
           res.items.forEach((itemRef) => {
-            // console.log(itemRef);
             getDownloadURL(itemRef).then((url) => {
               if(url && url.length > 0) {
-                // console.log("photourl:" +url);
                 if(itemRef.name === auth?.currentUser?.uid) {
                   setPhotoUrl({
                     url:url
                   });
                 } 
-                // else {
-                //   setPhotoUrl([]);
-                // }
               }
             })
           })
@@ -241,10 +235,6 @@ function Updateprofile() {
                 <option value="Industrialized Agriculture">Industrialized Agriculture</option>
               </Form.Select>
             : <Form.Control  value={types=f.AgricultureType} onClick={farmerType} onChange={(e) =>setTypes(e.target.value)} id="type" />
-              //   <option value={f.AgricultureType}>{f.AgricultureType}</option>
-              //   <option value="Subsistence Agriculture">Subsistence Agriculture</option>
-              //   <option value="Industrialized Agriculture">Industrialized Agriculture</option>
-              // </Form.Select> 
           }
         </Form.Group>
         <Form.Group as={Col} md="6">
@@ -328,24 +318,6 @@ function Updateprofile() {
                 <option value="Udupi ">Udupi </option>
               </Form.Select>
             : <Form.Control value={district=f.District} onClick={farmerDistrict} onChange={(e) =>setDistrict(e.target.value)} id="dist" />
-            //   {/* <option value={f.District}>{f.District}</option>
-            //   <option value="Bagalkot ">Bagalkot </option>
-            //   <option value="Ballari ">Ballari </option>
-            //   <option value="Chikballapur ">Chikballapur  </option>
-            //   <option value="Chitradurga ">Chitradurga </option>
-            //   <option value="Davanagere ">Davanagere </option>
-            //   <option value="Dharwad ">Dharwad </option>
-            //   <option value="Gadag ">Gadag </option>
-            //   <option value="Hassan ">Hassan </option>
-            //   <option value="Haveri  ">Haveri </option>
-            //   <option value="Kodagu  ">Kodagu </option>
-            //   <option value="Kolar ">Kolar</option>
-            //   <option value="Mandya ">Mandya </option>
-            //   <option value="Mysuru ">Mysuru i </option>
-            //   <option value="Raichur ">Raichur  </option>
-            //   <option value="Shivamogga  ">Shivamogga </option>
-            //   <option value="Udupi ">Udupi </option>
-            // </Form.Select>  */}
           }
         </Form.Group>
         <Form.Group as={Col} md="4" >
