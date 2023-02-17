@@ -19,7 +19,7 @@ import LawnGarden from './SoilTestContainer/TestingServices/LawnGarden';
 import HowToTakeSoil from './SoilTestContainer/TestingServices/HowToTakeSoil';
 import { onAuthStateChanged} from 'firebase/auth';
 import { auth } from './firebase';
-import Query from './MainContainer/Query';
+// import Query from './MainContainer/Query';
 import FarmerDetailsPage from './BussinessContainer/FarmerDetailsPage';
 import Updateprofile from './BussinessContainer/Updateprofile';
 import BuyersDetailsPage from './BussinessContainer/BuyersDetailsPage';
@@ -64,7 +64,7 @@ function App() {
         <Route path='/LawnGarden' element={<LawnGarden/>}></Route>
         <Route path='/SoilSample' element={<HowToTakeSoil/>}></Route>
         <Route path='/SoilReportUpload' element={<SoilTestPdfUploader/>}></Route>
-        <Route path='/Query' element={<Query/>}></Route>
+        {/* <Route path='/Query' element={<Query/>}></Route> */}
         <Route path='/UpdateProfile' element={<Updateprofile/>}></Route>
         <Route path='/BuyerUpdateProfile' element={<BuyerUpdateProfile/>}></Route>
       </Routes>

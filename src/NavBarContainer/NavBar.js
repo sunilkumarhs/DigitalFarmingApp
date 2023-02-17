@@ -45,7 +45,7 @@ const NavBar = () => {
           <Nav.Link href='/Services' style={{textDecoration:'none'}}><Navbar.Brand style={{fontSize:'1.5rem'}}>Services</Navbar.Brand></Nav.Link>
           </Nav>
           <Nav className="me-auto">
-          <Nav.Link href='/Contact' style={{textDecoration:'none'}}><Navbar.Brand style={{fontSize:'1.5rem'}}>Contact</Navbar.Brand></Nav.Link>
+          <Nav.Link href='/Contact' style={{textDecoration:'none'}}><Navbar.Brand style={{fontSize:'1.5rem'}}>Contact US</Navbar.Brand></Nav.Link>
           </Nav>
         </Navbar.Collapse>
         {auth?.currentUser?.email}

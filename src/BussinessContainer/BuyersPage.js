@@ -433,8 +433,14 @@ function BuyersPage() {
                             </Form.Control.Feedback>
                           </Form.Group>
                         </Row>
-                      <Button type="button" onClick={handleSearch}>Search Product</Button>
+                        <div className="row gx-5">
+                        <div className="col-lg-8 pb-1 mb-lg-0">
+                        <Button type="button" onClick={handleSearch}>Search Product</Button>
+                        </div>
+                      <div className="col-lg-4 pb-0">
                       <Button type="button" onClick={handleClear}>Clear Search</Button>
+                      </div>
+                        </div>
                     </Form>
                   </Card.Body>
                 </Card>  
@@ -466,23 +472,6 @@ function BuyersPage() {
                               </tr>
                               )
                           })}
-                    {/* {
-                      con === true
-                      ?  {srchPrds.map((prd) => {
-                              return (
-                                <tr key={prd.id}>
-                                <td>1</td>
-                                <td>{prd.ProductType}</td>
-                                <td>{prd.ProductName}</td>
-                                <td>{prd.QualityGrade}</td>
-                                <td>{prd.Quantity}</td>
-                                <td>{prd.Price}</td>
-                                <td><Button>Delete</Button></td>
-                              </tr>
-                              )
-                          })}
-                      : null
-                    } */}
                   </tbody>
                 </Table> 
 
@@ -496,19 +485,6 @@ function BuyersPage() {
                     <div key={farm.id}> 
                     <Card className='cards'>
                   <Card.Body>
-                  <Row className='mb-2'> 
-                    <Form.Group as={Col} md="12">
-                        <Form.Label>UserID</Form.Label>
-                        <InputGroup hasValidation>
-                        <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                      <Form.Control
-                        placeholder={farm.UserID}
-                        aria-describedby="inputGroupPrepend"
-                        disabled
-                      />
-                      </InputGroup>
-                    </Form.Group>
-                  </Row>
                   <Row className="mb-2">
                     <Form.Group as={Col} md="8" >
                     <Form.Label>Name</Form.Label>
@@ -591,7 +567,6 @@ function BuyersPage() {
                   </div>
         </Offcanvas.Body>
       </Offcanvas>
-
               </div>
               <div className="col-lg-4 pb-5">
                 <div style={{backgroundColor:'lightgray',padding:'1rem',

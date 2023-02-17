@@ -8,7 +8,7 @@ import {FaInstagramSquare} from "@react-icons/all-files/fa/FaInstagramSquare.esm
 
 
 function Topbar() {
-
+ 
   return (
     <div>
       <div className="container-fluid px-5 d-none d-lg-block bg-success">
@@ -16,7 +16,7 @@ function Topbar() {
             <div className="col-lg-3">
                 <div className="d-flex align-items-center justify-content-start">
                     <i className="bi bi-phone-vibrate fs-1 text-primary me-2"></i>
-                    <h2 className="mb-0">+012 345 6789</h2>
+                    <h2 className="mb-0">+91 9024874922</h2>
                 </div>
             </div>
             <div className="col-lg-6">
@@ -26,10 +26,10 @@ function Topbar() {
             </div>
             <div className="col-lg-3">
                 <div className="d-flex align-items-center justify-content-end">
-                <Link  to='/'><AiFillTwitterCircle size={50} className="text-white bg-primary me-3 "/></Link>
-                <Link  to='/'><FaFacebook size={50} className="text-white bg-primary me-3"/></Link>
-                <Link  to='/'><RiWhatsappFill size={50} className="text-white bg-primary me-3"/></Link>
-                <Link  to='/'><FaInstagramSquare size={50} className="text-white bg-primary me-3"/></Link>
+                <Link  to='/'><AiFillTwitterCircle size={50} className="text-blue  me-3 "/></Link>
+                <Link  to='/'><FaFacebook size={50} className="text-blue me-3"/></Link>
+                <Link  to='/'><RiWhatsappFill size={50} className="text-blue me-3"/></Link>
+                <Link  to='/'><FaInstagramSquare size={50} className="text-blue me-3"/></Link>
                 </div>
             </div>
         </div>
